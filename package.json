@@ -1,9 +1,9 @@
 {
-  "name": "cu-ui-boilerplate-component",
+  "name": "cu-web-server-stats",
   "version": "1.0.0",
-  "description": "",
+  "description": "Camelot Unchained Server Stats",
   "license": "MPL-2.0",
-  "main": "module/ts/module.ts",
+  "main": "src/main.js",
   "dependencies": {
     "react": "^0.13.3"
   },
