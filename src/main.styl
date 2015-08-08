@@ -6,7 +6,89 @@ html, body {
     margin: 0;
     padding: 0;
     overflow: hidden;
+    background-color: black;
 }
 
-#server-stats {
+#server-stats-container {
+    width: 1132px;
+    height: 800px;
 }
+
+.game-state {
+    height: 58px;
+    border: 1px solid #404040;
+    background-color: #121212;
+    box-sizeing: border-box;
+    margin: 10px;
+}
+
+.game-stats {
+    height: 300px;
+}
+
+.kills-board {
+    margin: 2px;
+    width: 1128px;
+    height: 521px;
+    background-image: url('images/leaderboard.png');
+}
+
+/* Realm score board */
+.realm-score {
+    position: relative;
+    float: left;
+    width: 373px; height: 257px;
+    margin: 10px 2px;
+    background-image: url('images/realmscore-frame.png');
+}
+
+/* Realm score board background panel */
+.score-bg {
+    position: absolute;
+    width: 315px; height: 165px;
+    top: 69px;
+    left: 29px;
+}
+.realm-score.arthurian .score-bg { background-image: url('images/arthurian-bg.png'); }
+.realm-score.tdd .score-bg { background-image: url('images/tdd-bg.png'); }
+.realm-score.viking .score-bg { background-image: url('images/viking-bg.png'); }
+
+.realm-score {
+    font-family: "Cinzel", "Lucida Sans", "Lucida Grande", "Lucida Sans Unicode", sans-serif;
+}
+
+.realm-score .title, .realm-score .label {
+    color: white;
+}
+
+.realm-score .title, .realm-score .label, .realm-score .points, .realm-score .players {
+    position: absolute;
+    width: 100%;
+    text-align: center;
+}
+
+.realm-score .title {
+    top: 16px;
+    font-size: 20px;
+}
+
+.realm-score .label {
+    top: 106px;
+    font-size: 18px;
+}
+
+.realm-score .points {
+    top: 125px;
+    font-size: 37px;
+}
+
+.realm-score .players {
+    top: 190px;
+    font-size: 14px;
+    font-family: "Lucida Sans", "Lucida Grande", "Lucida Sans Unicode", sans-serif;
+    opacity: 0.7;
+}
+
+.realm-score.arthurian { color: #e60000; }
+.realm-score.tdd { color: #a8df00; }
+.realm-score.viking { color: #00b4ff; }
