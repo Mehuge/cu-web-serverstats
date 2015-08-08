@@ -21,20 +21,40 @@ html, body {
 /* ************************************************************************** */
 
 .game-state {
+    position: relative;
     height: 58px;
     border: 1px solid #404040;
     background-color: #121212;
     box-sizeing: border-box;
     margin: 10px;
+    color: white;
+    font-size: 18px;
 }
 
-.game-stats {
-    height: 300px;
+.game-state>span {
+    position: absolute;
+    top: 18px;
+}
+
+.game-state>.state {
+    left: 40px;
+}
+
+.game-state>.time {
+    left: 440px;
+}
+
+.game-state>.pop {
+    left: 800px;
 }
 
 /* ************************************************************************** */
 
 /* Realm score board */
+.realm-scores {
+    height: 300px;
+}
+
 .realm-score {
     position: relative;
     float: left;
