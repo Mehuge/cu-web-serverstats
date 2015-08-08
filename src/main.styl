@@ -11,8 +11,14 @@ html, body {
 
 #server-stats-container {
     width: 1132px;
-    height: 800px;
+    height: 893px;
 }
+
+.game-state, .realm-score, .kills-board {
+    font-family: "Cinzel", "Lucida Sans", "Lucida Grande", "Lucida Sans Unicode", sans-serif;
+}
+
+/* ************************************************************************** */
 
 .game-state {
     height: 58px;
@@ -26,12 +32,7 @@ html, body {
     height: 300px;
 }
 
-.kills-board {
-    margin: 2px;
-    width: 1128px;
-    height: 521px;
-    background-image: url('images/leaderboard.png');
-}
+/* ************************************************************************** */
 
 /* Realm score board */
 .realm-score {
@@ -52,10 +53,6 @@ html, body {
 .realm-score.arthurian .score-bg { background-image: url('images/arthurian-bg.png'); }
 .realm-score.tdd .score-bg { background-image: url('images/tdd-bg.png'); }
 .realm-score.viking .score-bg { background-image: url('images/viking-bg.png'); }
-
-.realm-score {
-    font-family: "Cinzel", "Lucida Sans", "Lucida Grande", "Lucida Sans Unicode", sans-serif;
-}
 
 .realm-score .title, .realm-score .label {
     color: white;
@@ -92,3 +89,30 @@ html, body {
 .realm-score.arthurian { color: #e60000; }
 .realm-score.tdd { color: #a8df00; }
 .realm-score.viking { color: #00b4ff; }
+
+/* ************************************************************************** */
+
+.kills-board {
+    position: relative;
+    margin: 2px;
+    width: 1128px;
+    height: 521px;
+    background-image: url('images/leaderboard.png');
+}
+
+.kills-board>.title {
+    position: absolute;
+    top: 16px;
+    width: 100%;
+    text-align: center;
+    color: white;
+    font-size: 20px;
+}
+
+.kills-board>.kills, .kills-board>.deaths {
+    position: absolute;
+    width: 516px; height: 423px;
+    top: 60px;
+}
+.kills-board>.kills { left: 24px; }
+.kills-board>.deaths { right: 24px; }
