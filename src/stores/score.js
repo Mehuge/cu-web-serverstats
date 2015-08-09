@@ -20,7 +20,12 @@ var Score = Reflux.createStore({
         Rest.getControlGame({ includeControlPoints: false }).then(function(args) {
             ErrorAction.clear();
             store.gameData = {
-                tick: { type: GameState[args.gameState], state: args.gameState, countdown: args.timeLeft },
+                game: {
+                    now: Date.now(),
+                    type: GameState[args.gameState],
+                    state: args.gameState,
+                    countdown: args.timeLeft
+                },
                 arthurian: args.arthurianScore,
                 tdd: args.tuathaDeDanannScore,
                 viking: args.vikingScore

@@ -2,9 +2,26 @@ var Rest = require('../lib/cu-rest.js');
 var Reflux = require('reflux');
 var KillsAction = require('../actions/kills.js');
 var ErrorAction = require('../actions/error.js');
+var ScoreStore = require('../stores/score.js');
 
-var Population = Reflux.createStore({
+var Kills = Reflux.createStore({
     listenables: [ KillsAction ],
+    lastGameState: undefined,
+    gameStart: 0,
+    init: function() {
+        this.listenTo(ScoreStore, this.score);
+    },
+    score: function(args) {
+        if (args.game.state != this.lastGameState) {
+            // new game state, are we moving from waiting to basic or advanced?
+            if (this.lastGameState === 1 && args.game.state > 1) {
+                // game starting
+                this.gameStart = args.game.now;
+                console.log('client GAME START ' + this.gameStart);
+                this.lastGameState = args.game.state;
+            }
+        }
+    },
     parseKills: function(kills) {
         var players = {};
 
@@ -36,12 +53,17 @@ var Population = Reflux.createStore({
         leaderboard.kills.sort(compare);
         leaderboard.deaths.sort(compare);
     },
+
     fetchKills: function() {
         var store = this;
         function rejected(e) {
             ErrorAction.fire(e);
         }
-        Rest.getKills().then(function(args) {
+        var q = {};
+        if (this.gameStart) {
+            q.start = (new Date(this.gameStart)).toISOString()
+        }
+        Rest.getKills(q).then(function(args) {
             ErrorAction.clear();
             store.parseKills(args);
             store.trigger(store.leaderboard);
@@ -49,4 +71,4 @@ var Population = Reflux.createStore({
     }
 });
 
-module.exports = Population;
+module.exports = Kills;

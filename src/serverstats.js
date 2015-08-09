@@ -155,7 +155,7 @@ var ServerStats = React.createClass({
             population: { tdd: 0, arthurian: 0, viking: 0 },
             score: {
                 tdd: 0, arthurian: 0, viking: 0,
-                tick: { countdown: 0 }
+                game: { countdown: 0 }
             },
             leaderboard: {
                 kills: [],
@@ -170,9 +170,9 @@ var ServerStats = React.createClass({
                 default: return this.state.error;
             }
         }
-        var tick = this.state.score.tick;
-        if (tick) {
-            switch(tick.type) {
+        var game = this.state.score.game;
+        if (game) {
+            switch(game.type) {
                 case "inactive":
                     return 'Game is Inactive';
                 case "waiting":
@@ -186,11 +186,11 @@ var ServerStats = React.createClass({
     render: function() {
         var state = this.state,
             population = state.population,
-            tick = state.score.tick,
+            game = state.score.game,
             count = population.arthurian
                     + population.tdd
                     + population.viking,
-            remain = tick.countdown|0;
+            remain = game.countdown|0;
         remain = ((remain/60)|0) + ' min. ' + (remain%60) + ' sec.';
         return(
             <div className="server-stats">
