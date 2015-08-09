@@ -3,6 +3,7 @@ var React = require('react');
 var Reflux = require('reflux');
 var ScoreStore = require('./stores/score.js');
 var PopulationStore = require('./stores/population.js');
+var KillsStore = require('./stores/kills.js');
 var ErrorStore = require('./stores/error.js');
 
 /* ********************************************************************** */
@@ -194,7 +195,8 @@ var ServerStats = React.createClass({
     mixins: [
         Reflux.connect(ScoreStore, 'score'),
         Reflux.connect(PopulationStore, 'population'),
-        Reflux.connect(ErrorStore, 'error')
+        Reflux.connect(ErrorStore, 'error'),
+        Reflux.connect(KillsStore, 'kills')
     ],
     getInitialState: function() {
         return {
