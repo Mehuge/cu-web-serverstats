@@ -24,6 +24,7 @@
     "gulp-watch": "^4.3.4",
     "jshint-sourcemap-reporter": "0.0.1",
     "reactify": "^1.1.1",
+    "reflux": "^0.2.11",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0",
     "watchify": "^3.3.1"

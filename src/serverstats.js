@@ -1,5 +1,9 @@
 
 var React = require('react');
+var Reflux = require('reflux');
+var ScoreStore = require('./stores/score.js');
+var PopulationStore = require('./stores/population.js');
+var ErrorStore = require('./stores/error.js');
 
 /* ********************************************************************** */
 
@@ -62,9 +66,9 @@ var GameStats = React.createClass({
     render: function() {
         return (
             <div className="realm-scores">
-                <RealmScore realm="tdd" title="Tuatha De Danann" score={this.props.scores.tdd} players={this.props.population.tdd}/>
-                <RealmScore realm="arthurian" title="Arthurians" score={this.props.scores.arthurian} players={this.props.population.arthurian}/>
-                <RealmScore realm="viking" title="Vikings" score={this.props.scores.viking} players={this.props.population.viking}/>
+                <RealmScore realm="tdd" title="Tuatha De Danann" score={this.props.score.tdd} players={this.props.population.tdd}/>
+                <RealmScore realm="arthurian" title="Arthurians" score={this.props.score.arthurian} players={this.props.population.arthurian}/>
+                <RealmScore realm="viking" title="Vikings" score={this.props.score.viking} players={this.props.population.viking}/>
             </div>
         );
     }
@@ -186,48 +190,55 @@ var KillsBoard = React.createClass({
 })
 
 /* ********************************************************************** */
-
 var ServerStats = React.createClass({
+    mixins: [
+        Reflux.connect(ScoreStore, 'score'),
+        Reflux.connect(PopulationStore, 'population'),
+        Reflux.connect(ErrorStore, 'error')
+    ],
     getInitialState: function() {
         return {
             events: {},
-            tick: { type: "", countdown: 0 },
-            scores: {
-                arthurian: 0, tdd: 0, viking: 0
-            },
-            population: {
-                arthurian: 0, tdd: 0, viking: 0
-            },
-            kills: [],
-            deaths: []
+            population: { tdd: 0, arthurian: 0, viking: 0 },
+            score: {
+                tdd: 0, arthurian: 0, viking: 0,
+                tick: { countdown: 0 }
+            }
         };
     },
     getGameStateText: function() {
-        switch (this.state.error) {
-            case "timeout": return "Server is Offline";
+        if (this.state.error) {
+            switch (this.state.error) {
+                case "timeout": return "Server is Offline";
+                default: return this.state.error;
+            }
         }
-        switch(this.state.tick.type) {
-            case "inactive":
-                return 'Game is Inactive';
-            case "waiting":
-                return 'Waiting for Next Round';
-            case "basic": case "advanced":
-                return 'Round In Progress';
+        var tick = this.state.score.tick;
+        if (tick) {
+            switch(tick.type) {
+                case "inactive":
+                    return 'Game is Inactive';
+                case "waiting":
+                    return 'Waiting for Next Round';
+                case "basic": case "advanced":
+                    return 'Round In Progress';
+            }
         }
         return "";
     },
     render: function() {
         var state = this.state,
             population = state.population,
+            tick = state.score.tick,
             count = population.arthurian
                     + population.tdd
                     + population.viking,
-            remain = state.tick.countdown|0;
+            remain = tick.countdown|0;
         remain = ((remain/60)|0) + ' min. ' + (remain%60) + ' sec.';
         return(
             <div className="server-stats">
                 <GameState state={this.getGameStateText()} remain={remain} count={count}/>
-                <GameStats scores={this.state.scores} population={this.state.population}/>
+            <GameStats score={this.state.score} population={this.state.population}/>
                 <KillsBoard kills={this.state.kills} deaths={this.state.deaths}/>
             </div>
         );
@@ -241,58 +252,6 @@ var obj = function(container) {
 
 obj.prototype.render = function() {
     this.renderer = React.render(<ServerStats/>,this.container);
-};
-
-obj.prototype.update = function(what, data) {
-    switch(what) {
-        case "error":
-            this.renderer.setState({
-                error: data.error
-            });
-            return;
-    }
-    switch(what) {
-        case "gamestart":
-            this.renderer.setState({
-                error: null,
-                tick: data.tick,
-                scores: { arthurian: 0, tdd: 0, viking: 0 }
-            });
-            break;
-        case "gamescore":
-            this.renderer.setState({
-                error: null,
-                tick: data.tick,
-                scores: {
-                    arthurian: data.arthurian,
-                    tdd: data.tdd,
-                    viking: data.viking
-                }
-            });
-            break;
-        case "gameend":
-            break;
-        case "population":
-            this.renderer.setState({
-                population: {
-                    error: null,
-                    arthurian: data.arthurian,
-                    tdd: data.tdd,
-                    viking: data.viking
-                }
-            });
-            break;
-        case "kills":
-            this.renderer.setState({
-                kills: data
-            });
-            break;
-        case "deaths":
-            this.renderer.setState({
-                deaths: data
-            });
-            break;
-    }
 };
 
 module.exports = obj;
