@@ -13,7 +13,9 @@ Rest.selectServer("hatchery");
 function tick() {
     Score.fetchScore();
     Population.fetchPopulation();
-    // Kills.fetchKills();
 }
-
-setInterval(tick, 1000);
+function slowtick() {
+    Kills.fetchKills();
+}
+tick(); setInterval(tick, 1000);
+slowtick(); setInterval(slowtick, 10000);

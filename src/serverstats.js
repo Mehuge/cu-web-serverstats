@@ -77,113 +77,64 @@ var GameStats = React.createClass({
 
 /* ********************************************************************** */
 
-var KillsBoard = React.createClass({
+var KillsRow = React.createClass({
     render: function() {
         return (
-            <div className="kills-board">
+            <div className={'row ' + this.props.rank}>
+                <span>{this.props.rank}</span>
+                <span>{this.props.name}</span>
+                <span>{this.props.count}</span>
+            </div>
+        );
+    }
+});
+
+var ShowMore = React.createClass({
+    render: function() {
+        return (
+            <div className="row more">Show More</div>
+        );
+    }
+})
+
+var KillsHeading = React.createClass({
+    render: function() {
+        return (
+            <div className="heading">
+                <span>Rank</span><span>Name</span><span>{this.props.type}</span>
+            </div>
+        );
+    }
+});
+
+var KillsTable = React.createClass({
+    render: function() {
+        var rows = [], data = this.props.data;
+        for (var i = 0; i < data.length && i < 9; i++) {
+            var entry = data[i];
+            rows.push(<KillsRow rank={i+1} name={entry.name} count={entry.count}/>);
+        }
+        if (data.length > 9) {
+            rows.push(<ShowMore/>);
+        }
+        return (
+            <div className="table">{rows}</div>
+        );
+    }
+});
+
+var Leaderboard = React.createClass({
+    render: function() {
+        return (
+            <div className="leaderboards">
                 <div className="title">Leaderboards</div>
-                <div className="kills">
-                    <div className="heading">
-                        <span>Rank</span>
-                        <span>Name</span>
-                        <span>Kills</span>
-                    </div>
-                    <div className="table">
-                        <div className="row">
-                            <span>1</span>
-                            <span>Mehuge</span>
-                            <span>99999</span>
-                        </div>
-                        <div className="row">
-                            <span>1</span>
-                            <span>Mehuge</span>
-                            <span>99999</span>
-                        </div>
-                        <div className="row">
-                            <span>1</span>
-                            <span>Mehuge</span>
-                            <span>99999</span>
-                        </div>
-                        <div className="row">
-                            <span>1</span>
-                            <span>Mehuge</span>
-                            <span>99999</span>
-                        </div>
-                        <div className="row">
-                            <span>1</span>
-                            <span>Mehuge</span>
-                            <span>99999</span>
-                        </div>
-                        <div className="row">
-                            <span>1</span>
-                            <span>Mehuge</span>
-                            <span>99999</span>
-                        </div>
-                        <div className="row">
-                            <span>1</span>
-                            <span>Mehuge</span>
-                            <span>99999</span>
-                        </div>
-                        <div className="row">
-                            <span>1</span>
-                            <span>Mehuge</span>
-                            <span>99999</span>
-                        </div>
-                    </div>
+                <div className="board kills">
+                    <KillsHeading type="Kills"/>
+                    <KillsTable data={this.props.kills}/>
                 </div>
-                <div className="deaths">
-                    <div className="heading">
-                        <span>Rank</span>
-                        <span>Name</span>
-                        <span>Kills</span>
-                    </div>
-                    <div className="table">
-                        <div className="row">
-                            <span>1</span>
-                            <span>Mehuge</span>
-                            <span>99999</span>
-                        </div>
-                        <div className="row">
-                            <span>1</span>
-                            <span>Mehuge</span>
-                            <span>99999</span>
-                        </div>
-                        <div className="row">
-                            <span>1</span>
-                            <span>Mehuge</span>
-                            <span>99999</span>
-                        </div>
-                        <div className="row">
-                            <span>1</span>
-                            <span>Mehuge</span>
-                            <span>99999</span>
-                        </div>
-                        <div className="row">
-                            <span>1</span>
-                            <span>Mehuge</span>
-                            <span>99999</span>
-                        </div>
-                        <div className="row">
-                            <span>1</span>
-                            <span>Mehuge</span>
-                            <span>99999</span>
-                        </div>
-                        <div className="row">
-                            <span>1</span>
-                            <span>Mehuge</span>
-                            <span>99999</span>
-                        </div>
-                        <div className="row">
-                            <span>1</span>
-                            <span>Mehuge</span>
-                            <span>99999</span>
-                        </div>
-                        <div className="row">
-                            <span>1</span>
-                            <span>Mehuge</span>
-                            <span>99999</span>
-                        </div>
-                    </div>
+                <div className="board deaths">
+                    <KillsHeading type="Deaths"/>
+                    <KillsTable data={this.props.deaths}/>
                 </div>
             </div>
         );
@@ -196,7 +147,7 @@ var ServerStats = React.createClass({
         Reflux.connect(ScoreStore, 'score'),
         Reflux.connect(PopulationStore, 'population'),
         Reflux.connect(ErrorStore, 'error'),
-        Reflux.connect(KillsStore, 'kills')
+        Reflux.connect(KillsStore, 'leaderboard')
     ],
     getInitialState: function() {
         return {
@@ -205,6 +156,10 @@ var ServerStats = React.createClass({
             score: {
                 tdd: 0, arthurian: 0, viking: 0,
                 tick: { countdown: 0 }
+            },
+            leaderboard: {
+                kills: [],
+                deaths: []
             }
         };
     },
@@ -240,8 +195,8 @@ var ServerStats = React.createClass({
         return(
             <div className="server-stats">
                 <GameState state={this.getGameStateText()} remain={remain} count={count}/>
-            <GameStats score={this.state.score} population={this.state.population}/>
-                <KillsBoard kills={this.state.kills} deaths={this.state.deaths}/>
+                <GameStats score={this.state.score} population={this.state.population}/>
+                <Leaderboard kills={this.state.leaderboard.kills} deaths={this.state.leaderboard.deaths}/>
             </div>
         );
     }
