@@ -55,7 +55,8 @@ var call = module.exports.exec = function(verb, params) {
             timeout: params.timeout,
             contentType: params.contentType,
             error: function (jqXHR, textStatus, errorThrown) {
-                reject(textStatus, errorThrown, jqXHR);
+                // for some reason this causes an exception
+                reject(errorThrown);
             }
         }).done(function (data) {
             fulfill(data);
