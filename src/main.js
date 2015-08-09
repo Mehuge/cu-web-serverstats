@@ -50,5 +50,10 @@ game.poll(function(e) {
                 viking: e.data.vikings
             });
             break;
+        case "timeout":
+            app.update("error", {
+                error: e.type
+            });
+            break;
     }
 });

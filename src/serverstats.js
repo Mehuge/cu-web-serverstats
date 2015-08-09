@@ -62,7 +62,7 @@ var GameStats = React.createClass({
     render: function() {
         return (
             <div className="realm-scores">
-                <RealmScore realm="tdd" title="Tuatha De Denann" score={this.props.scores.tdd} players={this.props.population.tdd}/>
+                <RealmScore realm="tdd" title="Tuatha De Danann" score={this.props.scores.tdd} players={this.props.population.tdd}/>
                 <RealmScore realm="arthurian" title="Arthurians" score={this.props.scores.arthurian} players={this.props.population.arthurian}/>
                 <RealmScore realm="viking" title="Vikings" score={this.props.scores.viking} players={this.props.population.viking}/>
             </div>
@@ -203,6 +203,9 @@ var ServerStats = React.createClass({
         };
     },
     getGameStateText: function() {
+        switch (this.state.error) {
+            case "timeout": return "Server is Offline";
+        }
         switch(this.state.tick.type) {
             case "inactive":
                 return 'Game is Inactive';
@@ -214,11 +217,12 @@ var ServerStats = React.createClass({
         return "";
     },
     render: function() {
-        var state = '',
-            count = this.state.population.arthurian
-                    + this.state.population.tdd
-                    + this.state.population.viking,
-            remain = this.state.tick.countdown|0;
+        var state = this.state,
+            population = state.population,
+            count = population.arthurian
+                    + population.tdd
+                    + population.viking,
+            remain = state.tick.countdown|0;
         remain = ((remain/60)|0) + ' min. ' + (remain%60) + ' sec.';
         return(
             <div className="server-stats">
@@ -241,14 +245,23 @@ obj.prototype.render = function() {
 
 obj.prototype.update = function(what, data) {
     switch(what) {
+        case "error":
+            this.renderer.setState({
+                error: data.error
+            });
+            return;
+    }
+    switch(what) {
         case "gamestart":
             this.renderer.setState({
+                error: null,
                 tick: data.tick,
                 scores: { arthurian: 0, tdd: 0, viking: 0 }
             });
             break;
         case "gamescore":
             this.renderer.setState({
+                error: null,
                 tick: data.tick,
                 scores: {
                     arthurian: data.arthurian,
@@ -262,6 +275,7 @@ obj.prototype.update = function(what, data) {
         case "population":
             this.renderer.setState({
                 population: {
+                    error: null,
                     arthurian: data.arthurian,
                     tdd: data.tdd,
                     viking: data.viking
