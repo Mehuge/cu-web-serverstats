@@ -1,5 +1,5 @@
-if (!Promise) {
-    function Promise(fn) {
+if (typeof Promise === "undefined") {
+    function BasicPromise(fn) {
         var then, rejected, context,
             self = this,
             fulfill = function () {
@@ -26,5 +26,7 @@ if (!Promise) {
             }
         };
     }
+    module.exports = BasicPromise;
+} else {
+    module.exports = Promise;
 }
-module.exports = Promise;
