@@ -29,7 +29,7 @@ var columns = {
 
 var Leaderboard = React.createClass({
     getInitialState: function() {
-        return { full: false };
+        return { full: false, title: "Leaderboards" };
     },
     render: function() {
         var kills, deaths, mode;
@@ -53,7 +53,7 @@ var Leaderboard = React.createClass({
         }
         return (
             <div className="leaderboards">
-                <div className="title">Leaderboards</div>
+                <div className="title">{this.state.title}</div>
                 {kills}
                 {deaths}
             </div>
@@ -70,9 +70,9 @@ var Leaderboard = React.createClass({
 
     toggleMore: function(what) {
         if (this.state.full) {
-            this.setState({ full: false });
+            this.setState({ full: false, title: "Leaderboards" });
         } else {
-            this.setState({ full: what });
+            this.setState({ full: what, title: what === "kills" ? "Top Killers" : "Most Killed" });
         }
     }
 
