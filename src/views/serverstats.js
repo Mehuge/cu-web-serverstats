@@ -36,7 +36,7 @@ var ServerStats = React.createClass({
     getGameStateText: function() {
         if (this.state.error) {
             switch (this.state.error) {
-                case "timeout": return "Server is Offline";
+                case "timeout": return "Offline";
                 default: return this.state.error;
             }
         }

@@ -5,8 +5,9 @@ var Score = require('./actions/score.js');
 var Population = require('./actions/population.js');
 var Kills = require('./actions/kills.js');
 
-var App = function(container) {
-    this.container = container;
+var App = function(params) {
+    this.container = params.container;
+    this.server = params.server;
     return this;
 };
 
@@ -16,13 +17,11 @@ App.prototype.render = function() {
 
 App.prototype.run = function() {
 
-    debugger;
-    
     // Render UI
     this.render();
 
     // Select server
-    Rest.selectServer("hatchery");
+    Rest.selectServer(this.server);
 
     // What to do every tick
     function tick() {

@@ -11,12 +11,16 @@ var KillsTable = React.createClass({
             var entry = data[i];
             rows.push(<KillsRow rank={i+1} name={entry.name} count={entry.count}/>);
         }
-        if (data.length > 9) {
-            rows.push(<ShowMore/>);
+        for (/* no-op */; i < 9; i++) {
+            rows.push(<KillsRow/>);
         }
+        rows.push(<ShowMore onClick={this.toggleMore} mode={this.props.mode}/>);
         return (
             <div className="table">{rows}</div>
         );
+    },
+    toggleMore: function() {
+        this.props.toggleMore();
     }
 });
 

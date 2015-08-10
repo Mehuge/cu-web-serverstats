@@ -1,16 +1,16 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
-
-html, body {
-    margin: 0;
-    padding: 0;
-    background-color: black;
-}
 
 #server-stats-container {
     width: 1132px;
     height: 893px;
+}
+
+.disable-selection * {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 
 .game-state {
@@ -41,6 +41,9 @@ html, body {
 .game-state>.state {
     left: 40px;
 }
+.game-state>.state>.offline {
+    color: red;
+}
 
 .game-state>.time {
     left: 440px;
@@ -62,7 +65,7 @@ html, body {
     float: left;
     width: 373px; height: 257px;
     margin: 10px 2px;
-    background-image: url('images/realmscore-frame.png');
+    background-image: url('../images/realmscore-frame.png');
 }
 
 /* Realm score board background panel */
@@ -72,9 +75,9 @@ html, body {
     top: 69px;
     left: 29px;
 }
-.realm-score.arthurian .score-bg { background-image: url('images/arthurian-bg.png'); }
-.realm-score.tdd .score-bg { background-image: url('images/tdd-bg.png'); }
-.realm-score.viking .score-bg { background-image: url('images/viking-bg.png'); }
+.realm-score.arthurian .score-bg { background-image: url('../images/arthurian-bg.png'); }
+.realm-score.tdd .score-bg { background-image: url('../images/tdd-bg.png'); }
+.realm-score.viking .score-bg { background-image: url('../images/viking-bg.png'); }
 
 .realm-score .title, .realm-score .label {
     color: white;
@@ -119,7 +122,7 @@ html, body {
     margin: 2px;
     width: 1128px;
     height: 521px;
-    background-image: url('images/leaderboard.png');
+    background-image: url('../images/leaderboard.png');
 }
 
 .leaderboards>.title {
@@ -138,6 +141,9 @@ html, body {
 }
 .leaderboards>.kills { left: 40px; }
 .leaderboards>.deaths { right: 40px; }
+
+.leaderboards>.kills.full { width: 1048px; z-index: 1; }
+.leaderboards>.deaths.full { width: 1048px; z-index: 1; }
 
 .leaderboards>.board>.heading {
     height: 38px;
@@ -218,4 +224,5 @@ html, body {
     height: 38px;
     background-color: #212121;
     line-height: 38px;
+    cursor: pointer;
 }
