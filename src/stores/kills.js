@@ -22,14 +22,39 @@ var Kills = Reflux.createStore({
             }
         }
     },
+
+    // Parse the data from the kills API which is a chronological list of kills
+    // since a point in time.  Group the kill details into kills and deaths for
+    // each player.  From that, build a list of people with kills, and those with
+    // deaths including a count of how many, then sort into ranked order.
+    //
+    //  leaderboard: {
+    //      kills: [
+    //          name: "Player Name",
+    //          count: 10, // kill count
+    //          info: [
+    //              killdata, ...       // kill data (kills API record)
+    //          ]
+    //      ],
+    //      deaths: [
+    //          name: "Player Name",
+    //          count: 10, // death count
+    //          info: [
+    //              deathdata, ...       // death data (kills API record)
+    //          ]
+    //      ]
+    //  }
+    //
     parseKills: function(kills) {
         var players = {};
 
         // count kills and deaths per player
         for (var i = 0; i < kills.length; i++) {
             var k = kills[i].killer, v = kills[i].victim;
-            (players[k.name] = players[k.name] || { kills: 0, deaths: 0 }).kills ++;
-            (players[v.name] = players[v.name] || { kills: 0, deaths: 0 }).deaths ++;
+            if (k.id !== v.id) {        // ignore suicides
+                (players[k.name] = players[k.name] || { kills: [], deaths: [] }).kills.push(kills[i]);
+                (players[v.name] = players[v.name] || { kills: [], deaths: [] }).deaths.push(kills[i]);
+            }
         }
 
         var leaderboard = this.leaderboard = {
@@ -38,11 +63,11 @@ var Kills = Reflux.createStore({
 
         // split players into kills and deaths tables
         for (var name in players) {
-            if (players[name].kills) {
-                leaderboard.kills.push({ name: name, count: players[name].kills });
+            if (players[name].kills.length) {
+                leaderboard.kills.push({ name: name, count: players[name].kills.length, info: players[name].kills });
             }
-            if (players[name].deaths) {
-                leaderboard.deaths.push({ name: name, count: players[name].deaths });
+            if (players[name].deaths.length) {
+                leaderboard.deaths.push({ name: name, count: players[name].deaths.length, info: players[name].deaths });
             }
         }
 
