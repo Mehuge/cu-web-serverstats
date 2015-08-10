@@ -6,24 +6,24 @@ var KillsTable = require('./killstable.js');
 
 var columns = {
     "kills": [
-        { title: "Rank", width: 60, className: "rank" },
-        { title: "Name", width: 290 },
-        { title: "Kills", width: 130, className: "count" }
+        { title: "Rank", width: 70, className: "rank" },
+        { title: "Name", width: 310 },
+        { title: "Kills", width: 100, className: "count" }
     ],
     "deaths": [
-        { title: "Rank", width: 60, className: "rank" },
-        { title: "Name", width: 290 },
-        { title: "Deaths", width: 130, className: "count" }
+        { title: "Rank", width: 70, className: "rank" },
+        { title: "Name", width: 310 },
+        { title: "Deaths", width: 100, className: "count" }
     ],
     "full": [
-        { title: "Rank", width: 60, className: "rank" },
-        { title: "Name", width: 290 },
+        { title: "Rank", width: 70, className: "rank" },
+        { title: "Name", width: 310 },
         { title: "Realm", width: 100 },
         { title: "Race", width: 100 },
         { title: "Arch.", width: 100 },
-        { title: "Kills", width: 100, className: "count" },
-        { title: "Deaths", width: 100, className: "count" },
-        { title: "KDR", width: 100, className: "number" }
+        { title: "Kills", width: 80, className: "count" },
+        { title: "Deaths", width: 80, className: "count" },
+        { title: "KDR", width: 80, className: "number" }
     ]
 };
 
