@@ -152,6 +152,9 @@
     font-size: 18px;
     border: #434343 1px solid;
 }
+.leaderboards>.board.full>.heading {
+    font-size: 14px;
+}
 
 .leaderboards>.board>.heading>span {
     display: block;
@@ -162,17 +165,9 @@
     border-right: #434343 1px solid;
 }
 
-.leaderboards>.board>.heading>:nth-child(1) {
-    width: 60px;
-}
-.leaderboards>.board>.heading>:nth-child(2) {
-    width: 290px;
-}
-.leaderboards>.board>.heading>:nth-child(3) {
-    width: 131px;
+.leaderboards>.board>.heading>span:last-child {
     border-right: 0;
 }
-
 
 .leaderboards>.board>.table>.row {
     height: 38px;
@@ -180,6 +175,9 @@
     font-size: 18px;
     border: #434343 1px solid;
     border-top: 0;
+}
+.leaderboards>.board.full>.table>.row {
+    font-size: 14px;
 }
 
 .leaderboards>.board>.table>:nth-child(1),
@@ -207,16 +205,16 @@
     line-height: 38px;
 }
 
-.leaderboards>.board>.table>.row>:nth-child(1) {
-    width: 65px;
-    padding-left: 10px;
+.leaderboards>.board>.table>.row>span.rank {
+    box-sizing: border-box;
+    padding-left: 5px;
 }
-.leaderboards>.board>.table>.row>:nth-child(2) {
-    width: 285px;
-}
-.leaderboards>.board>.table>.row>:nth-child(3) {
-    width: 70px;
+.leaderboards>.board>.table>.row>span.count,
+.leaderboards>.board>.table>.row>span.number,
+ {
     text-align: right;
+    box-sizing: border-box;
+    padding-right: 30px;
 }
 
 .leaderboards>.board>.table>.row.more {

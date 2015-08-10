@@ -52,8 +52,8 @@ var Kills = Reflux.createStore({
         for (var i = 0; i < kills.length; i++) {
             var k = kills[i].killer, v = kills[i].victim;
             if (k.id !== v.id) {        // ignore suicides
-                (players[k.name] = players[k.name] || { kills: [], deaths: [] }).kills.push(kills[i]);
-                (players[v.name] = players[v.name] || { kills: [], deaths: [] }).deaths.push(kills[i]);
+                (players[k.name] = players[k.name] || { player: k, kills: [], deaths: [] }).kills.push(kills[i]);
+                (players[v.name] = players[v.name] || { player: v, kills: [], deaths: [] }).deaths.push(kills[i]);
             }
         }
 
@@ -64,10 +64,18 @@ var Kills = Reflux.createStore({
         // split players into kills and deaths tables
         for (var name in players) {
             if (players[name].kills.length) {
-                leaderboard.kills.push({ name: name, count: players[name].kills.length, info: players[name].kills });
+                leaderboard.kills.push({
+                    name: name,
+                    count: players[name].kills.length,
+                    info: players[name]
+                });
             }
             if (players[name].deaths.length) {
-                leaderboard.deaths.push({ name: name, count: players[name].deaths.length, info: players[name].deaths });
+                leaderboard.deaths.push({
+                    name: name,
+                    count: players[name].deaths.length,
+                    info: players[name]
+                });
             }
         }
 
@@ -86,7 +94,7 @@ var Kills = Reflux.createStore({
         }
         var q = {};
         if (this.gameStart) {
-            q.start = (new Date(this.gameStart)).toISOString()
+            q.start = (new Date(this.gameStart)).toISOString();
         }
         Rest.getKills(q).then(function(args) {
             ErrorAction.clear();
