@@ -19,6 +19,13 @@ var Kills = Reflux.createStore({
                 this.gameStart = args.game.now;
                 console.log('client GAME START ' + this.gameStart);
                 this.lastGameState = args.game.state;
+                KillsAction.fetchKills();
+            } else if (args.game.state > 1) {
+                // already started, guestimate the game start time
+                this.gameStart = args.game.now - (((1800 - args.game.countdown)|0)*1000);
+                console.log('client GAME START ' + this.gameStart);
+                this.lastGameState = args.game.state;
+                KillsAction.fetchKills();
             }
         }
     },
@@ -51,7 +58,7 @@ var Kills = Reflux.createStore({
         // count kills and deaths per player
         for (var i = 0; i < kills.length; i++) {
             var k = kills[i].killer, v = kills[i].victim;
-            if (k.id !== v.id) {        // ignore suicides
+            if (true || k.id !== v.id) {        // ignore suicides
                 (players[k.name] = players[k.name] || { player: k, kills: [], deaths: [] }).kills.push(kills[i]);
                 (players[v.name] = players[v.name] || { player: v, kills: [], deaths: [] }).deaths.push(kills[i]);
             }
