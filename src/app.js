@@ -5,23 +5,36 @@ var Score = require('./actions/score.js');
 var Population = require('./actions/population.js');
 var Kills = require('./actions/kills.js');
 
+var Router = require('react-router');
+var Route = Router.Route;
+var DefaultRoute = Router.DefaultRoute;
+
+var routes = (
+  <Route handler={ServerStats} path="/">
+    <DefaultRoute handler={ServerStats}/>
+    <Route name= "go" path="/:server/:mode" handler={ServerStats} />
+    <Route name="kills" path="/:server/kills" handler={ServerStats} />
+    <Route name="deaths" path="/:server/deaths" handler={ServerStats} />
+    <Route name="server" path="/:server" handler={ServerStats} />
+  </Route>
+);
+
 var App = function(params) {
     this.container = params.container;
-    this.server = params.server;
     return this;
 };
 
 App.prototype.render = function() {
-    this.renderer = React.render(<ServerStats/>,this.container);
+    var container = this.container;
+    Router.run(routes, Router.HashLocation, function(Root) {
+        React.render(<Root/>, container);
+    });
 };
 
 App.prototype.run = function() {
 
     // Render UI
     this.render();
-
-    // Select server
-    Rest.selectServer(this.server);
 
     // What to do every tick
     function tick() {
@@ -35,7 +48,7 @@ App.prototype.run = function() {
     }
 
     // Start ticks
-    tick(); setInterval(tick, 1000);
+    tick(); setInterval(tick, 5000);    // temp slow down while testing
     slowtick(); setInterval(slowtick, 10000);
 };
 
