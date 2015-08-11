@@ -36,7 +36,7 @@ App.prototype.run = function() {
 
     // Start ticks
     tick(); setInterval(tick, 1000);
-    slowtick(); setInterval(slowtick, 10000);
+    setInterval(slowtick, 10000);
 };
 
 module.exports = App;
