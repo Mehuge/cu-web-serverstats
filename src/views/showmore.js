@@ -1,10 +1,22 @@
 var React = require('react');
+var Link = require('react-router').Link;
 
 var ShowMore = React.createClass({
     render: function() {
-        var text = this.props.mode === 'full' ? 'Show Less' : 'Show More';
+        var link;
+        switch(this.props.type) {
+            case "detail":
+                link = (<Link to="go" params={{ server: "hatchery", mode: "leaderboards" }}>Show Less</Link>);
+                break;
+            case "kills":
+                link = (<Link to="go" params={{ server: "hatchery", mode: "kills" }}>Show More</Link>);
+                break;
+            case "deaths":
+                link = (<Link to="go" params={{ server: "hatchery", mode: "deaths" }}>Show More</Link>);
+                break;
+        }
         return (
-            <div className="row more disable-selection" onClick={this.props.onClick}>{text}</div>
+            <div className="row more disable-selection">{link}</div>
         );
     }
 });

@@ -7,11 +7,7 @@ var KillsHeading = React.createClass({
             var col = (<span className={columns[i].className} style={{ width: columns[i].width }}>{columns[i].title}</span>);
             cols.push(col);
         }
-        return (
-            <div className="heading">
-                {cols}
-            </div>
-        );
+        return (<div className="heading">{cols}</div>);
     }
 });
 

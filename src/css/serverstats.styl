@@ -145,8 +145,8 @@
 .leaderboards>.kills { left: 40px; }
 .leaderboards>.deaths { right: 40px; }
 
-.leaderboards>.kills.full { width: 1048px; z-index: 1; }
-.leaderboards>.deaths.full { width: 1048px; z-index: 1; }
+.leaderboards>.kills.detail { width: 1048px; z-index: 1; }
+.leaderboards>.deaths.detail { width: 1048px; z-index: 1; }
 
 .leaderboards>.board>.heading {
     height: 38px;
@@ -155,7 +155,7 @@
     font-size: 18px;
     border: #434343 1px solid;
 }
-.leaderboards>.board.full>.heading {
+.leaderboards>.board.detail>.heading {
     font-size: 14px;
 }
 
@@ -179,7 +179,7 @@
     border: #434343 1px solid;
     border-top: 0;
 }
-.leaderboards>.board.full>.table>.row {
+.leaderboards>.board.detail>.table>.row {
     font-size: 14px;
 }
 
@@ -226,4 +226,10 @@
     background-color: #212121;
     line-height: 38px;
     cursor: pointer;
+}
+.leaderboards>.board>.table>.row.more a:visited,
+.leaderboards>.board>.table>.row.more a {
+    text-decoration: none;
+    color: white;
+    display: block; width: 100%; height: 100%;
 }

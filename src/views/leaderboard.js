@@ -15,7 +15,7 @@ var columns = {
         { title: "Name", width: 310 },
         { title: "Deaths", width: 100, className: "count" }
     ],
-    "full": [
+    "detail": [
         { title: "Rank", width: 70, className: "rank" },
         { title: "Name", width: 310 },
         { title: "Realm", width: 100 },
@@ -32,25 +32,26 @@ var Leaderboard = React.createClass({
         return { full: false, title: "Leaderboards" };
     },
     render: function() {
-        var kills, deaths, mode;
-        if (this.state.full !== 'deaths') {
-            var mode = this.state.full ? 'full' : 'kills';
-            kills = (
-                <div className={'board kills' + (this.state.full === 'kills' ? ' full' : '')}>
-                    <KillsHeading mode={mode} columns={columns[mode]}/>
-                    <KillsTable mode={mode} columns={columns[mode]} data={this.props.kills} toggleMore={this.toggleMoreKills}/>
+
+        function makeTable(type, mode, data) {
+            var layout = mode === 'leaderboards' ? type : 'detail';
+            return (
+                <div className={'board ' + type + (mode === 'leaderboards' ? ' summary' : ' detail')}>
+                    <KillsHeading columns={columns[layout]}/>
+                    <KillsTable type={layout} columns={columns[layout]} data={data} />
                 </div>
             );
         }
-        if (this.state.full !== 'kills') {
-            var mode = this.state.full ? 'full' : 'deaths';
-            deaths = (
-                <div className={'board deaths' + (this.state.full === 'deaths' ? ' full' : '')}>
-                    <KillsHeading mode={mode}  columns={columns[mode]}/>
-                    <KillsTable mode={mode} columns={columns[mode]} data={this.props.deaths} toggleMore={this.toggleMoreDeaths}/>
-                </div>
-            );
+
+        // mode is either kills (detail) deaths (detail) or leaderboards (summaries)
+        var kills, deaths, mode = this.props.mode;
+        if (mode !== 'deaths') {        // kills or leaderboards
+            kills = makeTable('kills', mode, this.props.kills);
         }
+        if (mode !== 'kills') {
+            deaths = makeTable('deaths', mode, this.props.deaths);
+        }
+
         return (
             <div className="leaderboards">
                 <div className="title">{this.state.title}</div>
@@ -58,22 +59,6 @@ var Leaderboard = React.createClass({
                 {deaths}
             </div>
         );
-    },
-
-    toggleMoreKills: function() {
-        this.toggleMore('kills');
-    },
-
-    toggleMoreDeaths: function() {
-        this.toggleMore('deaths');
-    },
-
-    toggleMore: function(what) {
-        if (this.state.full) {
-            this.setState({ full: false, title: "Leaderboards" });
-        } else {
-            this.setState({ full: what, title: what === "kills" ? "Top Killers" : "Most Killed" });
-        }
     }
 
 });
