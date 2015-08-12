@@ -16,13 +16,7 @@ var KillsTable = React.createClass({
             rows.push(<KillsRow/>);
         }
         rows.push(<ShowMore type={this.props.type}/>);
-        return (
-            <div className="table">{rows}</div>
-        );
-    },
-    toggleMore: function() {
-        debugger;
-        this.props.toggleMore();
+        return (<div className="table">{rows}</div>);
     }
 });
 

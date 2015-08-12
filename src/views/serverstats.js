@@ -57,28 +57,25 @@ var ServerStats = React.createClass({
         return "";
     },
     componentDidMount: function () {
+        var params = this.props.params;
         if (this.props.params) {
-            console.log('select server ' + this.props.params.server);
-            Rest.selectServer(this.props.params.server);
-            var mode = this.props.params.mode || "leaderboards";
-            console.log('set mode from route ' + mode);
-            this.setState({ mode: mode });
+            console.log('select server ' + params.server);
+            Rest.selectServer(params.server);
         }
     },
     render: function() {
-        var state = this.state,
+        var state = this.state, params = this.props.params,
             population = state.population,
             game = state.score.game,
             count = population.arthurian + population.tdd + population.viking,
             remain = game.countdown|0;
         remain = ((remain/60)|0) + ' min. ' + (remain%60) + ' sec.';
-        console.log('ServerStats mode is ' + state.mode);
+        console.log('ServerStats mode is ' + params.mode);
         return(
             <div className="server-stats">
                 <GameState state={this.getGameStateText()} remain={remain} count={count}/>
                 <GameStats score={this.state.score} population={this.state.population}/>
-                <Leaderboard mode={this.state.mode} kills={this.state.leaderboard.kills} deaths={this.state.leaderboard.deaths}/>
-                <RouteHandler/>
+                <Leaderboard mode={params.mode} kills={this.state.leaderboard.kills} deaths={this.state.leaderboard.deaths}/>
             </div>
         );
     }

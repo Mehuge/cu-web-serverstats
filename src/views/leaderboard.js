@@ -36,7 +36,7 @@ var Leaderboard = React.createClass({
         function makeTable(type, mode, data) {
             var layout = mode === 'leaderboards' ? type : 'detail';
             return (
-                <div className={'board ' + type + (mode === 'kills' ? ' detail' : ' summary')}>
+                <div className={'board ' + type + (mode === 'leaderboards' ? ' summary' : ' detail')}>
                     <KillsHeading columns={columns[layout]}/>
                     <KillsTable type={layout} columns={columns[layout]} data={data} />
                 </div>
@@ -54,7 +54,6 @@ var Leaderboard = React.createClass({
 
         return (
             <div className="leaderboards">
-                <div style={{ color: 'white' }}>DEBUG: mode={mode}</div>
                 <div className="title">{this.state.title}</div>
                 {kills}
                 {deaths}
