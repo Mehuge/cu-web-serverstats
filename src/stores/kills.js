@@ -58,7 +58,7 @@ var Kills = Reflux.createStore({
         // count kills and deaths per player
         for (var i = 0; i < kills.length; i++) {
             var k = kills[i].killer, v = kills[i].victim;
-            if (true || k.id !== v.id) {        // ignore suicides
+            if (k.id !== v.id) {        // ignore suicides
                 (players[k.name] = players[k.name] || { player: k, kills: [], deaths: [] }).kills.push(kills[i]);
                 (players[v.name] = players[v.name] || { player: v, kills: [], deaths: [] }).deaths.push(kills[i]);
             }
