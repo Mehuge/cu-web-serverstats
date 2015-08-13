@@ -4,6 +4,7 @@ var ScoreAction = require('../actions/score.js');
 var ErrorAction = require('../actions/error.js');
 
 var GameState = {};
+GameState[-2] = "offline";
 GameState[-1] = "unknown";
 GameState[0] = "inactive";
 GameState[1] = "waiting";
@@ -15,10 +16,20 @@ var Score = Reflux.createStore({
     fetchScore: function() {
         var store = this;
         function rejected(e) {
-            ErrorAction.fire(e);
+            store.gameData = {
+                game: {
+                    now: Date.now(),
+                    type: GameState[-2],
+                    state: -2,
+                    countdown: 0
+                },
+                arthurian: 0,
+                tdd: 0,
+                viking: 0
+            };
+            store.trigger(store.gameData);
         }
         Rest.getControlGame({ includeControlPoints: false }).then(function(args) {
-            ErrorAction.clear();
             store.gameData = {
                 game: {
                     now: Date.now(),

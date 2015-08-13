@@ -7,7 +7,6 @@ var Rest = require('../lib/cu-rest.js');
 var ScoreStore = require('../stores/score.js');
 var PopulationStore = require('../stores/population.js');
 var KillsStore = require('../stores/kills.js');
-var ErrorStore = require('../stores/error.js');
 
 // Views
 var GameState = require('./gamestate.js');
@@ -18,7 +17,6 @@ var ServerStats = React.createClass({
     mixins: [
         Reflux.connect(ScoreStore, 'score'),
         Reflux.connect(PopulationStore, 'population'),
-        Reflux.connect(ErrorStore, 'error'),
         Reflux.connect(KillsStore, 'leaderboard')
     ],
     getInitialState: function() {
@@ -37,15 +35,11 @@ var ServerStats = React.createClass({
         };
     },
     getGameStateText: function() {
-        if (this.state.error) {
-            switch (this.state.error) {
-                case "timeout": return "Offline";
-                default: return this.state.error;
-            }
-        }
         var game = this.state.score.game;
         if (game) {
             switch(game.type) {
+                case "offline":
+                    return 'Offline';
                 case "inactive":
                     return 'Game is Inactive';
                 case "waiting":

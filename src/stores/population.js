@@ -1,17 +1,20 @@
 var Rest = require('../lib/cu-rest.js');
 var Reflux = require('reflux');
 var PopulationAction = require('../actions/population.js');
-var ErrorAction = require('../actions/error.js');
 
 var Population = Reflux.createStore({
     listenables: [ PopulationAction ],
     fetchPopulation: function() {
         var store = this;
         function rejected(e) {
-            ErrorAction.fire(e);
+            store._population = {
+                arthurian: 0,
+                tdd: 0,
+                viking: 0
+            };
+            store.trigger(store._population);
         }
         Rest.getPlayers().then(function(args) {
-            ErrorAction.clear();
             store._population = {
                 arthurian: args.arthurians,
                 tdd: args.tuathaDeDanann,
