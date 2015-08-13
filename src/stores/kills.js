@@ -1,33 +1,37 @@
 var Rest = require('../lib/cu-rest.js');
 var Reflux = require('reflux');
-var KillsAction = require('../actions/kills.js');
-var ErrorAction = require('../actions/error.js');
 var ScoreStore = require('../stores/score.js');
 
 var Kills = Reflux.createStore({
-    listenables: [ KillsAction ],
     lastGameState: undefined,
-    gameStart: 0,
+    fetchFrom: 0,
+    cache: [],
+
     init: function() {
-        this.listenTo(ScoreStore, this.score);
+        // Listen to ScoreStore changes
+        this.listenTo(ScoreStore, this.trackGameState);
     },
-    score: function(args) {
+
+    // Monitor the game state to determine when a round starts and when it ends
+    // and start/stop monitoring the kills API as necessary.
+    trackGameState: function(args) {
         if (args.game.state != this.lastGameState) {
+            var gameStart;
             // new game state, are we moving from waiting to basic or advanced?
             if (this.lastGameState === 1 && args.game.state > 1) {
                 // game starting
-                this.gameStart = args.game.now;
-                console.log('GAME START ' + this.gameStart);
-                KillsAction.start();
+                gameStart = args.game.now;
+                console.log('GAME START ' + (new Date(gameStart)).toISOString());
+                this.start(gameStart);
             } else if (args.game.state > 1) {
                 // already started, guestimate the game start time
-                this.gameStart = args.game.now - (((1800 - args.game.countdown)|0)*1000);
-                console.log('GAME START ' + this.gameStart);
-                KillsAction.start();
+                gameStart = args.game.now - (((1800 - args.game.countdown)|0)*1000);
+                console.log('GAME START ' + (new Date(gameStart)).toISOString());
+                this.start(gameStart);
             } else if (args.game.state === 1 && this.lastGameState > 1) {
                 // game has just finished
                 console.log('GAME ENDED');
-                KillsAction.stop();
+                this.stop();
             } else {
                 // game is not running, we have to wait until game start
                 // to start showing kills
@@ -71,6 +75,7 @@ var Kills = Reflux.createStore({
             }
         }
 
+        // reset leaderboards (we re-calculate them each time)
         var leaderboard = this.leaderboard = {
             kills: [], deaths: []
         };
@@ -99,42 +104,79 @@ var Kills = Reflux.createStore({
         }
         leaderboard.kills.sort(compare);
         leaderboard.deaths.sort(compare);
+
+        // notify listeners
+        this.trigger(this.leaderboard);
     },
 
-    fetchKills: function() {
-        var store = this;
-        function rejected(e) {
-            ErrorAction.fire(e);
-        }
-        var q = {};
-        if (this.gameStart) {
-            q.start = (new Date(this.gameStart)).toISOString();
-            console.log("GAME START TIME " + q.start);
-        }
-        Rest.getKills(q).then(function(args) {
-            ErrorAction.clear();
-            store.parseKills(args);
-            store.trigger(store.leaderboard);
-        }, rejected);
-    },
-
-    start: function() {
-        var store = this;
+    // clear kills tables
+    reset: function() {
         if (this.leaderboard) {
             this.leaderboard.kills = [];
             this.leaderboard.deaths = [];
             this.trigger(this.leaderboard);
         }
+    },
+
+    // Fetch latest kills, and maintain a cache of kills since the last game
+    // was started.  Each fetch only fetches kills since the last kill received
+    // or from game start if we have no kills yet.
+    fetchKills: function() {
+        var store = this;
+        function rejected(e) {
+            // silently ignore
+        }
+
+        // add start param
+        var q = {};
+        if (this.fetchFrom) {
+            q.start = (new Date(this.fetchFrom)).toISOString();
+            console.log("FETCH TIME " + q.start);
+        }
+
+        // run kills query
+        Rest.getKills(q).then(function(kills) {
+            // workaround bug in kills API returning kills in reverse chronological order
+            kills.sort(function (a, b) { return a.time < b.time ? -1 : a.time > b.time ? 1 : 0; });
+
+            // Append the new kills to the kill cache
+            store.cache.concat(kills);
+
+            // If we have some kills, set fetchFrom to just after the last kill received
+            if (store.cache.length) {
+                console.log("START TIME " + (new Date(store.cache[0].time)).toISOString());
+                store.fetchFrom = store.cache[store.cache.length-1].time + 1;
+                debugger;
+            }
+
+            // Parse kill data
+            store.parseKills(store.cache);
+        }, rejected);
+    },
+
+    // Start monitoring kills
+    start: function(start) {
+        // reset scores
+        this.reset();
+
+        // set start point and clear cache
+        this.fetchFrom = start;
+        this.cache = [];
+
+        // Make sure interval timer is running
         if (!this.timer) {
+            var store = this;
             this.timer = setInterval(function() {
                 store.fetchKills();
             }, 10000);
+
+            // fetch data immediately
             store.fetchKills();
         }
     },
 
+    // stop monitoring kills
     stop: function() {
-        // stop polling kills
         if (this.timer) {
             clearInterval(this.timer);
             this.timer = null;
