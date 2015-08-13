@@ -1,1 +1,1 @@
-module.exports = require('reflux').createActions([ 'fetchKills' ]);
+module.exports = require('reflux').createActions([ 'start', 'stop' ]);

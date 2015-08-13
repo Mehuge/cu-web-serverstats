@@ -42,14 +42,8 @@ App.prototype.run = function() {
         Population.fetchPopulation();
     }
 
-    // What to do every slow tick
-    function slowtick() {
-        Kills.fetchKills();
-    }
-
     // Start ticks
     tick(); setInterval(tick, 1000);
-    setInterval(slowtick, 10000);
 };
 
 module.exports = App;

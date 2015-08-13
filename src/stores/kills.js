@@ -17,16 +17,23 @@ var Kills = Reflux.createStore({
             if (this.lastGameState === 1 && args.game.state > 1) {
                 // game starting
                 this.gameStart = args.game.now;
-                console.log('client GAME START ' + this.gameStart);
-                this.lastGameState = args.game.state;
-                KillsAction.fetchKills();
+                console.log('GAME START ' + this.gameStart);
+                KillsAction.start();
             } else if (args.game.state > 1) {
                 // already started, guestimate the game start time
                 this.gameStart = args.game.now - (((1800 - args.game.countdown)|0)*1000);
-                console.log('client GAME START ' + this.gameStart);
-                this.lastGameState = args.game.state;
-                KillsAction.fetchKills();
+                console.log('GAME START ' + this.gameStart);
+                KillsAction.start();
+            } else if (args.game.state === 1 && this.lastGameState > 1) {
+                // game has just finished
+                console.log('GAME ENDED');
+                KillsAction.stop();
+            } else {
+                // game is not running, we have to wait until game start
+                // to start showing kills
+                console.log('GAME WAITING TO START');
             }
+            this.lastGameState = args.game.state;
         }
     },
 
@@ -102,12 +109,31 @@ var Kills = Reflux.createStore({
         var q = {};
         if (this.gameStart) {
             q.start = (new Date(this.gameStart)).toISOString();
+            console.log("GAME START TIME " + q.start);
         }
         Rest.getKills(q).then(function(args) {
             ErrorAction.clear();
             store.parseKills(args);
             store.trigger(store.leaderboard);
         }, rejected);
+    },
+
+    start: function() {
+        var store = this;
+        if (!this.timer) {
+            this.timer = setInterval(function() {
+                store.fetchKills();
+            }, 10000);
+            store.fetchKills();
+        }
+    },
+
+    stop: function() {
+        // stop polling kills
+        if (this.timer) {
+            clearInterval(this.timer);
+            this.timer = null;
+        }
     }
 });
 
