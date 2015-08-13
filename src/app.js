@@ -3,7 +3,6 @@ var Rest = require('./lib/cu-rest.js');
 var ServerStats = require('./views/serverstats.js');
 var Score = require('./actions/score.js');
 var Population = require('./actions/population.js');
-var Kills = require('./actions/kills.js');
 
 var Router = require('react-router');
 var Route = Router.Route;
