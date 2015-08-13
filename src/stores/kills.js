@@ -120,6 +120,11 @@ var Kills = Reflux.createStore({
 
     start: function() {
         var store = this;
+        if (this.leaderboard) {
+            this.leaderboard.kills = [];
+            this.leaderboard.deaths = [];
+            this.trigger(this.leaderboard);
+        }
         if (!this.timer) {
             this.timer = setInterval(function() {
                 store.fetchKills();
