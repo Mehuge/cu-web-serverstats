@@ -53,7 +53,7 @@ var ServerStats = React.createClass({
     componentDidMount: function () {
         var params = this.props.params;
         if (this.props.params) {
-            console.log('select server ' + params.server);
+            console.log('SELECT SERVER ' + params.server);
             Rest.selectServer(params.server);
         }
     },
@@ -64,7 +64,6 @@ var ServerStats = React.createClass({
             count = population.arthurian + population.tdd + population.viking,
             remain = game.countdown|0;
         remain = ((remain/60)|0) + ' min. ' + (remain%60) + ' sec.';
-        console.log('ServerStats mode is ' + params.mode);
         return(
             <div className="server-stats">
                 <GameState state={this.getGameStateText()} remain={remain} count={count}/>
