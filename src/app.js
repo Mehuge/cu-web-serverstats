@@ -12,8 +12,10 @@ var DefaultRoute = Router.DefaultRoute;
 var routes = (
     <Route handler={ServerStats} path="/">
         <DefaultRoute handler={ServerStats}/>
-        <Route name="go" path="/:server/:mode" handler={ServerStats} />
-        <Route name="server" path="/:server" handler={ServerStats} />
+        <Route path="/:server" handler={ServerStats} />
+        <Route path="/:server/" handler={ServerStats} />
+        <Route path="/:server/:mode" handler={ServerStats} name="go" />
+        <Route path="/:server/:mode/" handler={ServerStats} />
     </Route>
 );
 
