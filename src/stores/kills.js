@@ -140,13 +140,13 @@ var Kills = Reflux.createStore({
             kills.sort(function (a, b) { return a.time < b.time ? -1 : a.time > b.time ? 1 : 0; });
 
             // Append the new kills to the kill cache
-            store.cache.concat(kills);
+            store.cache = store.cache.concat(kills);
 
             // If we have some kills, set fetchFrom to just after the last kill received
             if (store.cache.length) {
-                console.log("START TIME " + (new Date(store.cache[0].time)).toISOString());
-                store.fetchFrom = store.cache[store.cache.length-1].time + 1;
-                debugger;
+                console.log("FIRST KILL " + (new Date(store.cache[0].time)).toISOString());
+                console.log("LAST KILL " + (new Date(store.cache[store.cache.length-1].time)).toISOString());
+                store.fetchFrom = (new Date(store.cache[store.cache.length-1].time)).valueOf() + 1;
             }
 
             // Parse kill data
