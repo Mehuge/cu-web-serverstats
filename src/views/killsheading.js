@@ -1,18 +1,28 @@
 var React = require('react');
 var Filter = require('./filter.js');
+var Reflux = require('reflux');
+var RouteStore = require('../stores/route.js');
 
 var KillsHeading = React.createClass({
+    mixins: [
+        Reflux.connect(RouteStore, 'route')
+    ],
     getInitialState: function() {
-        return { clicked: false };
+        return { clicked: false, route: RouteStore.route };
     },
     render: function() {
-        var filter = this.props.filter;
-        var element, hasFilter = '', className = [];
+        var filter = this.props.filter,
+            route = this.state.route,
+            element,
+            className = [];
         if (filter && filter.key && filter.values.length) {
             if (this.state.clicked) {
                 element = (<Filter filter={filter}/>);
             }
             className.push('has-filter');
+            if (filter.key === route.filter) {
+                className.push('is-on');
+            }
         }
         if (this.props.className) {
             className.push(this.props.className);

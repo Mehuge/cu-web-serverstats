@@ -169,6 +169,13 @@
 }
 .leaderboards>.board>.heading>span.has-filter {
     cursor: pointer;
+    background-image: url('../images/filter-off.png');
+    background-size: 12px;
+    background-position: 90% center;
+    background-repeat: no-repeat;
+}
+.leaderboards>.board>.heading>span.has-filter.is-on {
+    background-image: url('../images/filter-on.png');
 }
 
 .leaderboards>.board>.heading>span.has-filter>ul {
@@ -179,6 +186,7 @@
     border: 1px solid #434343;
     z-index: 1;
     position: relative;
+    left: -9px;
     width: 150px;
 }
 .leaderboards>.board>.heading>span.has-filter>ul>li {
@@ -193,6 +201,12 @@
 
 .leaderboards>.board>.heading>span.has-filter>ul>li:hover {
     background-color: #313131;
+}
+
+.leaderboards>.board>.heading>span.has-filter>ul>li.clear {
+    font-size: 80%;
+    font-style: italic;
+    color: #808080;
 }
 
 .leaderboards>.board>.heading>span:last-child {
