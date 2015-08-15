@@ -8,15 +8,19 @@ Displays the game score and kill counts for the current game of capture the duck
     cd cu-web-serverstats
     npm install
     gulp
-  
+
 ## Testing
 
     http://localhost:9000/
-  
+
+## Demo
+
+    http://tracker.sorcerer.co.uk/gamestats
+
 ## Deployment
 
-Copy the contents of the dist folder to your web server.  Either uses as-is with index.html 
-or include serverstats.css and main.js and Cinzel font in your existing page and define a 
+Copy the contents of the dist folder to your web server.  Either uses as-is with index.html
+or include serverstats.css and main.js and Cinzel font in your existing page and define a
 div id="server-stats-container" that will contain the content.  Use index.html as reference.
 
 # Todo
@@ -27,13 +31,14 @@ div id="server-stats-container" that will contain the content.  Use index.html a
 - [ ] Filter by Realm, Race, Archetype
 - [ ] Drill down into player stats [ need some graphics! ]
 
-## Routing
+## Routing (goal)
 
-    /gamestats/#<server>/<view>/<period>
+    /gamestats/#<server>/<view>/period/filter/value
 
 Server will select the server to display stats for.
 View will be one of "leaderboards", "kills", "deaths" (leaderboards will be the default)
-Period would be the time period to show stats for, being "game", "today", "24h" ...
+Period would be the time period to show stats for, being "game" (or perhaps "current"), "today", "24h" ...
+filter/value are used to filter the tables on a column, such as faction/TDD
 
 ## Handling End Game
 
