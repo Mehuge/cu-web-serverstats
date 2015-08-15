@@ -1,13 +1,34 @@
 var React = require('react');
+var Filter = require('./filter.js');
 
 var KillsHeading = React.createClass({
+    getInitialState: function() {
+        return { clicked: false };
+    },
     render: function() {
-        var rest, cols = [], columns = this.props.columns;
-        for (var i = 0; i < columns.length; i++) {
-            var col = (<span className={columns[i].className} style={{ width: columns[i].width }}>{columns[i].title}</span>);
-            cols.push(col);
+        var filter = this.props.filter;
+        var element, hasFilter = '', className = [];
+        if (filter && filter.key && filter.values.length) {
+            if (this.state.clicked) {
+                element = (<Filter filter={filter}/>);
+            }
+            className.push('has-filter');
         }
-        return (<div className="heading">{cols}</div>);
+        if (this.props.className) {
+            className.push(this.props.className);
+        }
+        return (
+            <span className={className.join(' ')} style={{ width: this.props.width }} onClick={this.onclick}>
+                {this.props.title}
+                {element}
+            </span>
+        );
+    },
+
+    onclick: function() {
+        if (this.props.filter) {
+            this.setState({ clicked: !this.state.clicked });
+        }
     }
 });
 

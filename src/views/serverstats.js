@@ -7,6 +7,7 @@ var Rest = require('../lib/cu-rest.js');
 var ScoreStore = require('../stores/score.js');
 var PopulationStore = require('../stores/population.js');
 var KillsStore = require('../stores/kills.js');
+var RouteStore = require('../stores/route.js');
 
 // Views
 var GameState = require('./gamestate.js');
@@ -17,7 +18,8 @@ var ServerStats = React.createClass({
     mixins: [
         Reflux.connect(ScoreStore, 'score'),
         Reflux.connect(PopulationStore, 'population'),
-        Reflux.connect(KillsStore, 'leaderboard')
+        Reflux.connect(KillsStore, 'leaderboard'),
+        Reflux.connect(RouteStore, 'route')
     ],
     getInitialState: function() {
         return {
@@ -31,7 +33,8 @@ var ServerStats = React.createClass({
             leaderboard: {
                 kills: [],
                 deaths: []
-            }
+            },
+            route: RouteStore.route || { server: "", mode: "" }
         };
     },
     getGameStateText: function() {
@@ -50,15 +53,8 @@ var ServerStats = React.createClass({
         }
         return "";
     },
-    componentDidMount: function () {
-        var params = this.props.params;
-        if (this.props.params) {
-            console.log('SELECT SERVER ' + params.server);
-            Rest.selectServer(params.server);
-        }
-    },
     render: function() {
-        var state = this.state, params = this.props.params,
+        var state = this.state, route = state.route,
             population = state.population,
             game = state.score.game,
             count = population.arthurian + population.tdd + population.viking,
@@ -68,7 +64,7 @@ var ServerStats = React.createClass({
             <div className="server-stats">
                 <GameState state={this.getGameStateText()} remain={remain} count={count}/>
                 <GameStats score={this.state.score} population={this.state.population}/>
-                <Leaderboard mode={params.mode} kills={this.state.leaderboard.kills} deaths={this.state.leaderboard.deaths}/>
+                <Leaderboard mode={route.mode} kills={this.state.leaderboard.kills} deaths={this.state.leaderboard.deaths}/>
             </div>
         );
     }
