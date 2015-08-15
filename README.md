@@ -15,7 +15,7 @@ Displays the game score and kill counts for the current game of capture the duck
 
 ## Demo
 
-    http://tracker.sorcerer.co.uk/gamestats
+A work in progress demo can be viewed here: http://tracker.sorcerer.co.uk/gamestats
 
 ## Deployment
 
