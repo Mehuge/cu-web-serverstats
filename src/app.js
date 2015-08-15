@@ -29,6 +29,7 @@ var App = function(params) {
 App.prototype.render = function() {
     var container = this.container;
     Router.run(routes, Router.HashLocation, function(Root, state) {
+        state.params.server = state.params.server || "hatchery";
         RouteAction.setRoute(state.params);
         console.log('SELECT SERVER ' + state.params.server);
         Rest.selectServer(state.params.server);
