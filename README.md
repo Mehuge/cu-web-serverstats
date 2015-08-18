@@ -4,7 +4,7 @@ Displays the game score and kill counts for the current game of capture the duck
 
 ## Installation
 
-    git clone https://github.com/Mehuge/cu-web-serverstats
+    git clone https://github.com/CUModSquad/cu-web-serverstats
     cd cu-web-serverstats
     npm install
     gulp
@@ -25,10 +25,10 @@ div id="server-stats-container" that will contain the content.  Use index.html a
 
 # Todo
 
-- [ ] Detect and handle end-game.
-- [ ] Add routing.  Initially just for server and view selection.
+- [x] Detect and handle end-game.
+- [x] Add routing.  Initially just for server and view selection.
 - [ ] Server selection
-- [ ] Filter by Realm, Race, Archetype
+- [x] Filter by Realm, Race, Archetype
 - [ ] Drill down into player stats [ need some graphics! ]
 
 ## Routing (goal)
