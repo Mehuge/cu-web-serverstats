@@ -1,7 +1,6 @@
 var Rest = require('../lib/cu-rest.js');
 var Reflux = require('reflux');
 var ScoreAction = require('../actions/score.js');
-var ErrorAction = require('../actions/error.js');
 
 var GameState = {};
 GameState[-2] = "offline";
