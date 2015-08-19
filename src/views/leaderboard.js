@@ -28,9 +28,6 @@ var columns = {
 };
 
 var Leaderboard = React.createClass({
-    getInitialState: function() {
-        return { full: false, title: "Leaderboards" };
-    },
     getFilters: function(cols, data) {
         // build up distinct values lists for filters (required by headings with filters)
         var filters = {};
@@ -50,7 +47,7 @@ var Leaderboard = React.createClass({
     },
     render: function() {
 
-        var self = this;
+        var self = this, title;
 
         function makeTable(type, mode, data) {
             var layout = mode === 'leaderboards' ? type : 'detail';
@@ -72,9 +69,12 @@ var Leaderboard = React.createClass({
             deaths = makeTable('deaths', mode, this.props.deaths);
         }
 
+        // Create title from mode
+        title = mode.length ? mode[0].toUpperCase() + mode.substr(1) : "";
+
         return (
             <div className="leaderboards">
-                <div className="title">{this.state.title}</div>
+                <div className="title">{title}</div>
                 {kills}
                 {deaths}
             </div>
