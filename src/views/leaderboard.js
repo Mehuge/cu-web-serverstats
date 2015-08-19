@@ -12,7 +12,7 @@ var columns = {
     ],
     "deaths": [
         { title: "Rank", width: 70, className: "rank" },
-        { title: "Name", width: 299 },
+        { title: "Name", width: 302 },
         { title: "Deaths", width: 100, className: "count" }
     ],
     "detail": [
