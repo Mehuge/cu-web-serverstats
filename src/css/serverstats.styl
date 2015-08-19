@@ -3,7 +3,7 @@
 @import url('http://fonts.googleapis.com/css?family=Merriweather+Sans');
 
 #server-stats-container {
-    width: 1132px;
+    width: 1075px;          /* reduced by 57px */
     height: 893px;
 }
 
@@ -66,17 +66,19 @@
 .realm-score {
     position: relative;
     float: left;
-    width: 373px; height: 257px;
+    width: 354.333px; height: 257px;
     margin: 10px 2px;
     background-image: url('../images/realmscore-frame.png');
+    background-size: 354px 257px;
 }
 
 /* Realm score board background panel */
 .score-bg {
     position: absolute;
-    width: 315px; height: 165px;
+    width: 305px; height: 165px;
     top: 69px;
-    left: 29px;
+    left: 24px;
+    background-size: 305px 165px;
 }
 .realm-score.arthurian .score-bg { background-image: url('../images/arthurian-bg.png'); }
 .realm-score.tdd .score-bg { background-image: url('../images/tdd-bg.png'); }
@@ -122,10 +124,10 @@
 
 .leaderboards {
     position: relative;
-    margin: 2px;
-    width: 1128px;
+    width: 100%;
     height: 521px;
     background-image: url('../images/leaderboard.png');
+    background-size: 100% 521px;
 }
 
 .leaderboards>.title {
@@ -139,14 +141,14 @@
 
 .leaderboards>.board {
     position: absolute;
-    width: 512px; height: 423px;
+    width: 500px; height: 423px;
     top: 60px;
 }
-.leaderboards>.kills { left: 40px; }
-.leaderboards>.deaths { right: 40px; }
+.leaderboards>.kills { left: 30px; }
+.leaderboards>.deaths { right: 30px; }
 
-.leaderboards>.kills.detail { width: 1048px; z-index: 1; }
-.leaderboards>.deaths.detail { width: 1048px; z-index: 1; }
+.leaderboards>.kills.detail { width: 1015px; z-index: 1; }
+.leaderboards>.deaths.detail { width: 1015px; z-index: 1; }
 
 .leaderboards>.board>.heading {
     height: 38px;

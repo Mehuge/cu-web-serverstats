@@ -7,17 +7,17 @@ var KillsTable = require('./killstable.js');
 var columns = {
     "kills": [
         { title: "Rank", width: 70, className: "rank" },
-        { title: "Name", width: 310 },
+        { title: "Name", width: 302 },
         { title: "Kills", width: 100, className: "count" }
     ],
     "deaths": [
         { title: "Rank", width: 70, className: "rank" },
-        { title: "Name", width: 310 },
+        { title: "Name", width: 302 },
         { title: "Deaths", width: 100, className: "count" }
     ],
     "detail": [
         { title: "Rank", width: 70, className: "rank" },
-        { title: "Name", width: 310 },
+        { title: "Name", width: 320 },
         { title: "Realm", width: 100, filter: "faction" },
         { title: "Race", width: 100, filter: "race" },
         { title: "Arch.", width: 100, filter: "archetype" },
