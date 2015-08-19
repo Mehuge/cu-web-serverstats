@@ -1,9 +1,12 @@
 var Rest = require('../lib/cu-rest.js');
 var Reflux = require('reflux');
 var ScoreStore = require('../stores/score.js');
+var RouteAction = require('../actions/route.js');
 
 var Kills = Reflux.createStore({
+    listenables: [ RouteAction ],
     lastGameState: undefined,
+    server: undefined,
     fetchFrom: 0,
     cache: [],
 
@@ -38,6 +41,23 @@ var Kills = Reflux.createStore({
                 console.log('GAME WAITING TO START');
             }
             this.lastGameState = args.game.state;
+        }
+    },
+
+    // clear the kills cache
+    clearCache: function() {
+        this.cache = [];
+        this.lastGameState = undefined;
+        this.fetchFrom = 0;
+    },
+
+    // Listen for route changes, and if the server has changed, reset the
+    // kill stats cache
+    setRoute: function(route) {
+        if (route.server !== this.server) {
+            this.reset();
+            this.clearCache();
+            this.server = route.server;
         }
     },
 
