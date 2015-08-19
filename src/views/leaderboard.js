@@ -8,12 +8,12 @@ var columns = {
     "kills": [
         { title: "Rank", width: 70, className: "rank" },
         { title: "Name", width: 302 },
-        { title: "Kills", width: 100, className: "count" }
+        { title: "Kills", width: 90, className: "count" }
     ],
     "deaths": [
         { title: "Rank", width: 70, className: "rank" },
         { title: "Name", width: 302 },
-        { title: "Deaths", width: 100, className: "count" }
+        { title: "Deaths", width: 90, className: "count" }
     ],
     "detail": [
         { title: "Rank", width: 70, className: "rank" },
